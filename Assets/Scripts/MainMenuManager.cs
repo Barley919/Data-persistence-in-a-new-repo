@@ -5,19 +5,29 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.UIElements;
 
 public class MainMenuManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] TextMeshProUGUI nameInputText;
+    [SerializeField] TextMeshProUGUI topScoreText;
+    string username;
+
+    private void Start()
     {
-        
+        if(SaveManager.Instance.bestScore > 0)
+        {
+            topScoreText.text = "Top Score: " + SaveManager.Instance.bestScore;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void NameInput()
     {
-        
+        username = nameInputText.text;
+        SaveManager.Instance.username = username;
+        Debug.Log(username);
     }
 
     public void StartNew()
@@ -27,6 +37,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void Exit()
     {
+        SaveManager.Instance.SaveInfo();
+
 # if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
